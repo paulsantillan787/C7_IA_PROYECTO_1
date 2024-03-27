@@ -36,6 +36,16 @@ positions = [
   (50, 650), (350, 650), (650, 650)
 ]
 
+ocupado = [
+  0,0,0,
+  0,0,0,
+  0,0,0,0,0,0,
+  0,0,0,
+  0,0,0,
+  0,0,0,
+  0,0,0
+]
+
 # Funciones auxiliares
 def hallar_posicion(pos):
   for position in positions:
@@ -83,14 +93,16 @@ while running:
     elif event.type == pygame.MOUSEBUTTONDOWN:
       if fase == 1:
         pos = hallar_posicion(event.pos)
-        if pos is not None:
+        if pos is not None and ocupado[positions.index(pos)] == 0:
           if turno == 1:
             piece = GamePiece(WHITE, pos, number)
             blancos.append(piece)
+            ocupado[positions.index(pos)] = 1
             turno = 2
           elif turno == 2:
             piece = GamePiece(RED, pos, number)
             rojos.append(piece)
+            ocupado[positions.index(pos)] = 1
             turno = 1
             number += 1
             if number == 4:
