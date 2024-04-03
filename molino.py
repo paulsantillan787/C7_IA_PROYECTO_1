@@ -10,6 +10,7 @@ number = 1
 fase = 1
 blancos = []
 rojos = []
+currentPiece = None
 
 # Set the dimensions of the game window
 WIDTH = 700
@@ -22,6 +23,7 @@ pygame.display.set_caption("Nine Men's Morris")
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
+GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 BROWN = (139, 69, 19)
 
@@ -45,6 +47,33 @@ ocupado = [
   0,0,0,
   0,0,0
 ]
+
+connections = {
+    (50, 50): [(350, 50), (50, 350)],
+    (350, 50): [(50, 50), (650, 50), (350, 150)],
+    (650, 50): [(350, 50), (650, 350)],
+    (150,150): [(350,150), (150, 350)],
+    (350, 150): [(150, 150), (550, 150), (350, 250), (350, 50)],
+    (550, 150): [(350, 150), (550, 350)],
+    (250, 250): [(350, 250), (250, 350)],
+    (350, 250): [(250, 250), (450, 250), (350, 150)],
+    (450, 250): [(350, 250), (450, 350)],
+    (50, 350): [(50, 50), (150, 350), (50, 650)],
+    (150, 350): [(50, 350), (150, 150), (250, 350), (150, 550)],
+    (250, 350): [(150, 350), (250, 250), (250, 450)],
+    (450, 350): [(350, 350), (450, 250), (550, 350), (450, 450)],
+    (550, 350): [(450, 350), (550, 150), (650, 350), (550, 550)],
+    (650, 350): [(550, 350), (650, 50), (650, 650)],
+    (250, 450): [(250, 350), (350, 450)],
+    (350, 450): [(250, 450), (450, 450), (350, 550)],
+    (450, 450): [(350, 450), (450, 350)],
+    (150, 550): [(150, 350), (350, 550)],
+    (350, 550): [(150, 550), (350, 450), (550, 550)],
+    (550, 550): [(350, 550), (550, 450)],
+    (50, 650): [(50, 350), (350, 650)],
+    (350, 650): [(50, 650), (650, 650), (350, 550)],
+    (650, 650): [(350, 650), (650, 350)]
+}
 
 # Funciones auxiliares
 def hallar_posicion(pos):
@@ -83,6 +112,11 @@ while running:
     
   for piece in rojos:
     piece.draw(window, pygame)
+    
+  if currentPiece is not None:
+    for connection in connections[currentPiece.position]:
+      if ocupado[positions.index(connection)] == 0:
+        pygame.draw.circle(window, GREEN, connection, 10)
 
   # Update the display
   pygame.display.update()
@@ -110,7 +144,29 @@ while running:
         if len(rojos) == 9 and len(blancos) == 9:
           fase = 2
       elif fase == 2:
-        print("Fase 2")
+        pos = hallar_posicion(event.pos)
+        if pos is not None:
+          # if currentPiece is None or currentPiece.color == pieces[turno]:
+          if ocupado[positions.index(pos)] == 1:
+            if turno == 1:
+              for piece in blancos:
+                if piece.position == pos:
+                  currentPiece = piece
+                  print(currentPiece.number)                    
+                  break
+            elif turno == 2:
+              for piece in rojos:
+                if piece.position == pos:
+                  currentPiece = piece
+                  print(currentPiece.number)
+                  break
+          elif currentPiece is not None:
+            if currentPiece.move(pos, ocupado, positions, connections):
+              if turno == 1:
+                turno = 2
+              elif turno == 2:
+                turno = 1
+              currentPiece = None
 
 # Quit Pygame
 pygame.quit()

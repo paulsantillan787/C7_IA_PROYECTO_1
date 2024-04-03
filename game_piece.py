@@ -18,4 +18,13 @@ class GamePiece :
     
     window.blit(text_surface, text_position)
     
+  def move(self, position, ocupado, posiciones, connections):
+    if ocupado[posiciones.index(position)] == 0 and position in connections[self.position]:
+      ocupado[posiciones.index(self.position)] = 0
+      self.position = position
+      ocupado[posiciones.index(position)] = 1
+      return True
+    return False
+    
+    
     
