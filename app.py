@@ -23,8 +23,8 @@ f3n = 0
 f1b = 0
 f2b = 0
 f3b = 0
-fbm = False
-fnm = False
+fbm = True
+fnm = True
 mol = False
 mact = []
 lmn = []
@@ -576,9 +576,9 @@ while running:
       print ('Ganan blancas')
       running = False
 
-    #if not fbm and not fnm:
-      #print('empate')
-      #running = False
+    if not fbm and not fnm:
+      print('empate')
+      running = False
 
     
   # Update the display
