@@ -551,34 +551,35 @@ while running:
         elif(elemento[1] == 'B3'):
           dibujarPosition(elemento[0][0], elemento[0][1], WHITE, 3)
   
-  
-  if f1n + f2n + f3n == 2:
-    print ('Ganan blancas')
-    running = False
+  if F==2:
+    if f1n + f2n + f3n == 2:
+      print ('Ganan blancas')
+      running = False
 
-  if f1b + f2b + f3b == 2:
-    print ('Ganan negras')
-    running = False
+    if f1b + f2b + f3b == 2:
+      print ('Ganan negras')
+      running = False
 
-  if f1b == 0 or f2b == 0 or f3b == 0:
-    print ('Ganan negras')
-    running = False
+    if f1b == 0 or f2b == 0 or f3b == 0:
+      print ('Ganan negras')
+      running = False
 
-  if f1n == 0 or f2n == 0 or f3n == 0:
-    print ('Ganan blancas')
-    running = False
+    if f1n == 0 or f2n == 0 or f3n == 0:
+      print ('Ganan blancas')
+      running = False
 
-  if not fbm and fnm:
-    print ('Ganan negras')
-    running = False
+    if not fbm and fnm:
+      print ('Ganan negras')
+      running = False
 
-  if not fnm and fbm:
-    print ('Ganan blancas')
-    running = False
+    if not fnm and fbm:
+      print ('Ganan blancas')
+      running = False
 
-  if not fbm and not fnm:
-    print('empate')
-    running = False
+    #if not fbm and not fnm:
+      #print('empate')
+      #running = False
+
     
   # Update the display
   pygame.display.update()
