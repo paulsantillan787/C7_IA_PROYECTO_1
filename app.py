@@ -165,26 +165,79 @@ def PosicionarFichaNegra(a, b):
  
 # BORRAR
 def MoverFichaBlanca(a, b, x, y):
-    global T, F, n, mol, t, f1b, f2b, f3b
-    if F == 2:  
-        if(isinstance(T[a][b], tuple)
+  global T, F, n, mol, t, f1b, f2b, f3b
+  if F == 2:  
+    if(not mol and isinstance(T[a][b], tuple)
+      and isinstance(T[x][y], tuple)
+      and T[x][y][1] == "v"  
+      and (T[x][y][0] in G[T[a][b][0]]) 
+      and ((T[a][b][1] == 'B1' and (f1b > 0 and f1b < 4)) 
+      or (T[a][b][1] == 'B2' and (f2b > 0 and f2b < 4))
+      or (T[a][b][1] == 'B3' and (f2b > 0 and f2b < 4)))):
+      if t == "B":
+        if (T[a][b][1]=="B1"):
+          for conn in G[T[a][b][0]]:
+            x1, y2 = hallar_posicion(conn)
+            if T[x1][y2] == T[x][y]:
+              T[x][y] = (T[x][y][0],"B1")
+        if (T[a][b][1]=="B2"):
+          for conn in G[T[a][b][0]]:
+            x1, y2 = hallar_posicion(conn)
+            if T[x1][y2] == T[x][y]:
+              T[x][y] = (T[x][y][0],"B2" ) 
+        if (T[a][b][1]=="B3"):
+          for conn in G[T[a][b][0]]:
+            x1, y2 = hallar_posicion(conn)
+            if T[x1][y2] == T[x][y]:
+              T[x][y] = (T[x][y][0],"B3" )
+        T[a][b] = (T[a][b][0],"v" )
+        mol = verificarMolinoBlanco(x, y)
+        if mol:
+          quitarFichaNegra(x, y)
+      else:
+        print("Movimiento no válido. No es tu turno.")
+    else:
+      print("Movimiento no válido. La posición seleccionada no es válida o la pieza seleccionada no está disponible.")
+  else:
+    print("Fase no válida. Sólo puedes mover piezas en la fase 2.")
+
+def MoverFichaNegra(a, b, x, y):
+    global T, F, n, mol, t, f1n, f2n, f3n
+    if F == 2:
+        if (not mol
+            and isinstance(T[a][b], tuple)
             and isinstance(T[x][y], tuple)
-            and T[x][y][1] == "v"  
-            and (T[x][y][0] in G[T[a][b][0]]) 
-            and ((T[a][b][1] == 'B1' and (f1b > 0 and f1b < 4)) 
-            or (T[a][b][1] == 'B2' and (f2b > 0 and f2b < 4))
-            or (T[a][b][1] == 'B3' and (f2b > 0 and f2b < 4)))):
-            if t == "B":
-                T[a][b] = (T[a][b][0],"v" ) 
-                if (T[a][b][1]=="B1"):
-                    T[x][y] = (T[x][y][0],"B1" )               
-                elif (T[a][b][1]=="B2"):
-                    T[x][y] = (T[x][y][0],"B2" )  
-                elif (T[a][b][1]=="B3"):
-                    T[x][y] = (T[x][y][0],"B3" )  
-                mol = verificarMolinoBlanco(x, y)
+            and T[x][y][1] == "v"
+            and (T[x][y][0] in G[T[a][b][0]])
+            and ((T[a][b][1] == "N1" and (f1n > 0 and f1n < 4))
+                or (T[a][b][1] == "N2" and (f2n > 0 and f2n < 4))
+                or (T[a][b][1] == "N3" and (f2n > 0 and f2n < 4)))):
+            if t == "N":
+                if T[a][b][1] == "N1":
+                    for conn in G[T[a][b][0]]:
+                        x1, y2 = hallar_posicion(conn)
+                        if T[x1][y2] == T[x][y]:
+                            T[x][y] = (T[x][y][0], "N1")
+                if T[a][b][1] == "N2":
+                    for conn in G[T[a][b][0]]:
+                        x1, y2 = hallar_posicion(conn)
+                        if T[x1][y2] == T[x][y]:
+                            T[x][y] = (T[x][y][0], "N2")
+                if T[a][b][1] == "N3":
+                    for conn in G[T[a][b][0]]:
+                        x1, y2 = hallar_posicion(conn)
+                        if T[x1][y2] == T[x][y]:
+                            T[x][y] = (T[x][y][0], "N3")
+                T[a][b] = (T[a][b][0], "v")
+                mol = verificarMolinoNegro(x, y)
                 if mol:
-                    quitarFichaNegra(x, y)
+                  quitarFichaBlanca(x, y)
+            else:
+                print("Movimiento no válido. No es tu turno.")
+        else:
+            print("Movimiento no válido. La posición seleccionada no es válida o la pieza seleccionada no está disponible.")
+    else:
+        print("Fase no válida. Sólo puedes mover piezas en la fase 2.")
 
 
 def buscarMolino(listaMolino, mact):
