@@ -15,6 +15,8 @@ T = [
 
 t = 'B'
 F = 1
+FGB = 9
+FGN = 9
 f1n = 0
 f2n = 0
 f3n = 0
@@ -98,12 +100,14 @@ def dibujarPosition(x, y, color, number):
 #aux
 nB = 1
 nN = 1
+nuevaPos = ()
 
 
 def PosicionarFichaBlanca(a, b):
-  global T, f1b, f2b, f3b, t, f1n, f2n, f3n, F, nB
+  global T, f1b, f2b, f3b, t, f1n, f2n, f3n, F, nB, FGB
   if F == 1:
     print('A0')
+    print(mol)
     if not mol and t == 'B' and isinstance(T[a][b], tuple) and T[a][b][1] == 'v':
       print('A1')
       # Sea la ficha a posicionar, se toma en cuenta el numero de la ficha
@@ -119,8 +123,10 @@ def PosicionarFichaBlanca(a, b):
       
       # Incluir función verificarMolino(x,y,n)
       verificarMolinoBlanco(a, b)
+      FGB -= 1
+      print(FGB)
       
-      if f1b + f2b + f3b + f1n + f2n + f3n == 18:
+      if FGB == 0:
         # Si se consumió todas las fichas, se cambia de fase
         F = 2
         print(F)
@@ -134,10 +140,12 @@ def PosicionarFichaBlanca(a, b):
     
     
 def PosicionarFichaNegra(a, b):
-  global T, f1n, f2n, f3n, t, f1b, f2b, f3b, F, nN
+  global T, f1n, f2n, f3n, t, f1b, f2b, f3b, F, nN, FGN
   if F == 1:
     print('A2')
+    
     if not mol and t == 'N' and isinstance(T[a][b], tuple) and T[a][b][1] == 'v':
+      print('A3')
       # Sea la ficha a posicionar, se toma en cuenta el numero de la ficha
       if nN == 1:
         f1n += 1
@@ -151,8 +159,10 @@ def PosicionarFichaNegra(a, b):
       # Incluir función verificarMolino(x,y,n)
       
       verificarMolinoNegro(a, b)
+      print(FGN)
+      FGN -= 1
       
-      if f1b + f2b + f3b + f1n + f2n + f3n == 18:
+      if FGN == 0:
         # Si se consumio todas las fichas, se cambia de fase
         F = 2
         print(F)
@@ -484,8 +494,6 @@ def quitarFichaNegra(a, b):
       t = 'N'
       # global mol
       mol = False
-      return 1
-    return 0
 
 # Quitar la ficha blanca con numero n de la posicion M[a][b]
 def quitarFichaBlanca(a, b):
@@ -506,8 +514,6 @@ def quitarFichaBlanca(a, b):
       t = 'B'
       # global mol
       mol = False
-      return 1
-    return 0
   
 # Game loop
 running = True
@@ -552,14 +558,20 @@ while running:
     if event.type == pygame.QUIT:
       running = False
     elif event.type == pygame.MOUSEBUTTONDOWN:
-      pos = hallar_posicion(event.pos)
-      if pos is not None:
-        print(T[pos[0]][pos[1]][1])
-        PosicionarFichaBlanca(pos[0], pos[1])
-        PosicionarFichaNegra(pos[0], pos[1])
-        MoverFichaBlanca(pos[0], pos[1], 6, 6)
-        quitarFichaNegra(pos[0], pos[1])
-        quitarFichaBlanca(pos[0], pos[1])
+      if event.button == 1:
+        print(event.pos)
+        pos = hallar_posicion(event.pos)
+        if pos is not None:
+          print(T[pos[0]][pos[1]][1])
+          PosicionarFichaBlanca(pos[0], pos[1])
+          PosicionarFichaNegra(pos[0], pos[1])
+          MoverFichaBlanca(pos[0], pos[1], 6, 6)
+          quitarFichaNegra(pos[0], pos[1])
+      elif event.button == 3:
+        nuevaPos = hallar_posicion(event.pos)
+        if nuevaPos is not None:
+          MoverFichaBlanca(pos[0], pos[1], nuevaPos[0], nuevaPos[1])
+          MoverFichaNegra(pos[0], pos[1], nuevaPos[0], nuevaPos[1])
   
   
 # Quit Pygame
