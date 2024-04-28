@@ -565,8 +565,8 @@ while running:
           print(T[pos[0]][pos[1]][1])
           PosicionarFichaBlanca(pos[0], pos[1])
           PosicionarFichaNegra(pos[0], pos[1])
-          MoverFichaBlanca(pos[0], pos[1], 6, 6)
           quitarFichaNegra(pos[0], pos[1])
+          quitarFichaBlanca(pos[0], pos[1])
       elif event.button == 3:
         nuevaPos = hallar_posicion(event.pos)
         if nuevaPos is not None:
