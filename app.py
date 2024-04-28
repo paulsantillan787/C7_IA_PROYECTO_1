@@ -126,7 +126,7 @@ def PosicionarFichaBlanca(a, b):
       FGB -= 1
       print(FGB)
       
-      if FGB == 0:
+      if FGB + FGN == 0:
         # Si se consumió todas las fichas, se cambia de fase
         F = 2
         print(F)
@@ -162,7 +162,7 @@ def PosicionarFichaNegra(a, b):
       print(FGN)
       FGN -= 1
       
-      if FGN == 0:
+      if FGN + FGB== 0:
         # Si se consumio todas las fichas, se cambia de fase
         F = 2
         print(F)
