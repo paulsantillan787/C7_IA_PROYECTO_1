@@ -599,7 +599,7 @@ while running:
           quitarFichaBlanca(pos[0], pos[1])
       elif event.button == 3:
         nuevaPos = hallar_posicion(event.pos)
-        if nuevaPos is not None:
+        if nuevaPos is not None and pos is not None:
           MoverFichaBlanca(pos[0], pos[1], nuevaPos[0], nuevaPos[1])
           MoverFichaNegra(pos[0], pos[1], nuevaPos[0], nuevaPos[1])
   
